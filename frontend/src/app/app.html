@@ -1,0 +1,227 @@
+<!-- Main Container -->
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 sidebar" [class.sidebar-visible]="sidebarVisible">
+      <div class="sidebar-content">
+        <!-- Logo/Header -->
+        <div class="sidebar-header">
+          <h4 class="text-center mb-4">
+            <i class="fas fa-brain text-primary"></i>
+            Insightmate
+          </h4> 
+        </div>
+        <!-- Mode Toggle -->
+        <div class="mode-toggle mb-4">
+          <h6 class="text-muted mb-2">Mode</h6>
+          <div class="btn-group d-flex" role="group">
+            <button
+              type="button"
+              class="btn btn-sm"
+              [class.btn-primary]="currentMode === 'general'"
+              [class.btn-outline-primary]="currentMode !== 'general'"
+              (click)="switchMode('general')">
+              <i class="fas fa-comments"></i> General
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm"
+              [class.btn-primary]="currentMode === 'personalized'"
+              [class.btn-outline-primary]="currentMode !== 'personalized'"
+              (click)="switchMode('personalized')">
+              <i class="fas fa-user-circle"></i> Personal
+            </button>
+          </div>
+        </div>
+        <!-- Navigation Links -->
+        <nav class="sidebar-nav">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeNavItem === 'chat'" (click)="navigateToChat()" style="cursor: pointer;">
+                <i class="fas fa-comments"></i> Chat
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeNavItem === 'upload'" (click)="navigateToUpload()" style="cursor: pointer;">
+                <i class="fas fa-upload"></i> Upload Files
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeNavItem === 'portfolio'" (click)="navigateToPortfolio()" style="cursor: pointer;">
+                <i class="fas fa-link"></i> Portfolio Links
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeNavItem === 'data'" (click)="navigateToData()" style="cursor: pointer;">
+                <i class="fas fa-database"></i> Data
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- User Data Summary -->
+        <div class="user-summary mt-4" *ngIf="currentMode === 'personalized'">
+          <h6 class="text-muted mb-2">Your Data</h6>
+          <div class="summary-item">
+            <small class="text-muted">
+              <i class="fas fa-file"></i> 3 files uploaded
+            </small>
+          </div>
+          <div class="summary-item">
+            <small class="text-muted">
+              <i class="fas fa-link"></i> 2 portfolio links
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <button class="btn btn-link d-md-none" (click)="toggleSidebar()">
+              <i class="fas fa-bars"></i>
+            </button>
+            <h5 class="mb-0">
+              <span *ngIf="currentMode === 'general'" class="text-primary">
+                <i class="fas fa-comments"></i> General Assistant
+              </span>
+              <span *ngIf="currentMode === 'personalized'" class="text-success">
+                <i class="fas fa-user-circle"></i> Personal Assistant
+              </span>
+            </h5>
+          </div>
+          <div class="mode-badge">
+            <span class="badge"
+              [class.bg-primary]="currentMode === 'general'"
+              [class.bg-success]="currentMode === 'personalized'">
+              {{ currentMode | titlecase }} Mode
+            </span>
+          </div>
+        </div>
+      </header>
+      <!-- Chat Interface -->
+      <div class="chat-container">
+        <!-- Welcome Message -->
+        <div class="welcome-message" *ngIf="currentMode === 'general'">
+          <div class="card">
+            <div class="card-body text-center">
+              <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+              <h4>Welcome to Insightmate!</h4>
+              <p class="text-muted">
+                I'm your AI-powered assistant. I can help you with programming, writing, productivity tips, and much more.
+                How can I assist you today?
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="welcome-message" *ngIf="currentMode === 'personalized'">
+          <div class="card">
+            <div class="card-body text-center">
+              <i class="fas fa-user-astronaut fa-3x text-success mb-3"></i>
+              <h4>Your Personal Assistant</h4>
+              <p class="text-muted">
+                I have access to your portfolio and uploaded documents. I can provide personalized career advice, resume feedback,
+                and job application guidance.
+              </p>
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <button
+                    class="btn btn-outline-success btn-sm w-100"
+                    (click)="triggerFileUpload()"
+                    [disabled]="isLoading">
+                    <i class="fas fa-upload"></i> Upload Resume
+                  </button>
+                </div>
+                <div class="col-md-4">
+                  <button
+                    class="btn btn-outline-success btn-sm w-100"
+                    (click)="addPortfolioLink()"
+                    [disabled]="isLoading">
+                    <i class="fas fa-link"></i> Add Portfolio
+                  </button>
+                </div>
+                <div class="col-md-4">
+                  <button
+                    class="btn btn-outline-success btn-sm w-100"
+                    (click)="startChat()">
+                    <i class="fas fa-comments"></i> Start Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" #chatMessages>
+          <!-- No messages state -->
+          <div *ngIf="messages.length === 0" class="text-center text-muted p-4">
+            <i class="fas fa-comments fa-2x mb-2"></i>
+            <p>Start a conversation by typing a message below!</p>
+          </div>
+          <!-- Chat messages -->
+          <div *ngFor="let message of messages" class="message fade-in" [class.user-message]="message.isUser" [class.ai-message]="!message.isUser">
+            <div *ngIf="!message.isUser" class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <p>{{ message.text }}</p>
+              <small class="text-muted">{{ message.timestamp | date: 'shortTime' }}</small>
+            </div>
+          </div>
+          <!-- Loading indicator -->
+          <div *ngIf="isLoading" class="message ai-message fade-in">
+            <div class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <small class="text-muted">Typing...</small>
+            </div>
+          </div>
+        </div>
+        <!-- Chat Input -->
+        <div class="chat-input">
+          <div class="input-group">
+            <input
+              type="text"
+              id="messageInput"
+              class="form-control"
+              placeholder="Type your message here..."
+              [(ngModel)]="messageText"
+              (keyup.enter)="sendMessage()"
+              #messageInput>
+            <button
+              class="btn btn-primary"
+              type="button"
+              (click)="sendMessage()"
+              [disabled]="!messageText.trim() || isLoading">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="input-actions mt-2 d-flex align-items-center">
+            <button class="btn btn-link btn-sm" title="Upload File" (click)="triggerFileUpload()" [disabled]="isLoading">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <button
+              class="btn btn-link btn-sm"
+              title="Voice Input (Coming Soon)"
+              disabled>
+              <i class="fas fa-microphone"></i>
+            </button>
+            <small class="text-muted ms-auto">
+              Press Enter to send
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay d-md-none" [class.show]="sidebarVisible" (click)="toggleSidebar()"></div>
+</div>

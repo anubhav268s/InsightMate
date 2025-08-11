@@ -1,0 +1,101 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add
+global styles to this file,
+and also import other style files */
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Global Styles for Insightmate */
+
+/* :root replaced with valid SCSS :root selector and CSS variables */
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #f8fafc;
+  --accent-color: #10b981;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --success-color: #059669;
+  --warning-color: #f59e0b;
+  --error-color: #dc2626;
+  /* -Dspring.datasource.username=pos is not valid CSS, so commented */
+  /* -Dspring.datasource.username=pos */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* stray bracket ']' commented out */
+/* ] */
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+/* 'bto-primary f' is not valid, commented out */
+/* bto-primary f */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* 'H1 v' is not valid, commented out */
+/* H1 v */
+.btn-success {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.card {
+  border: none;
+  border-radius: 1rem;
+  /* cgba(®, 0, 0, 0.1) is not valid, replaced with rgba(0,0,0,0.1) */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+/* '- card:hever' is not valid, corrected to '.card:hover' */
+.card:hover {
+  /* cgba(O, 0, 0, 0.1) is not valid, replaced with rgba(0,0,0,0.1) */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/*
+Animation classes
+*/
+
